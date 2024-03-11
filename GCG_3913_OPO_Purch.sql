@@ -1,0 +1,17 @@
+CREATE TABLE "GCG_3913_OPO_Purch"(
+ "TRMNL" CHAR(3),
+ "Sales_Order" CHAR(7),
+ "SO_Line" CHAR(4),
+ "Customer_Num" CHAR(6),
+ "Cust_Name" CHAR(30),
+ "Customer_PO" CHAR(15),
+ "Part" CHAR(20),
+ "Part_Desc" CHAR(30),
+ "SO_Qty_Ordered" NUMERIC(13,4),
+ "SO_Line_Due" DATE,
+ "GS_PO_Num" CHAR(7),
+ "PO_Line_Num" CHAR(4),
+ "PO_Date_Order" DATE,
+ "PO_Vendor" CHAR(6),
+ "PO_Qty" NUMERIC(14,4),
+ "PO_Line_Due" DATE);
