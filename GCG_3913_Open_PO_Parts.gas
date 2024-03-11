@@ -1,0 +1,550 @@
+Program.Sub.ScreenSU.Start
+gui.SS_Form1..create
+gui.SS_Form1..caption("Open Work Order Shortage Report")
+gui.SS_Form1..size(4135,1825)
+gui.SS_Form1..minx(0)
+gui.SS_Form1..miny(0)
+gui.SS_Form1..position(0,0)
+gui.SS_Form1..event(unload,Unload)
+gui.SS_Form1..alwaysontop(False)
+gui.SS_Form1..fontname("Arial")
+gui.SS_Form1..fontsize(8)
+gui.SS_Form1..forecolor(0)
+gui.SS_Form1..fontstyle(,,,,)
+gui.SS_Form1..BackColor(-2147483633)
+gui.SS_Form1..controlbox(True)
+gui.SS_Form1..maxbutton(False)
+gui.SS_Form1..minbutton(False)
+gui.SS_Form1..mousepointer(0)
+gui.SS_Form1..moveable(True)
+gui.SS_Form1..sizeable(False)
+gui.SS_Form1..ShowInTaskBar(True)
+gui.SS_Form1..titlebar(True)
+gui.SS_Form1.lbl_dtpStart.create(label,"Start Date",True,1800,200,1,100,135,True,0,Arial,8,-2147483633,0)
+gui.SS_Form1.lbl_dtpStart.defaultvalue("")
+gui.SS_Form1.lbl_dtpStart.controlgroup(0)
+gui.SS_Form1.dtpStart.create(datepicker)
+gui.SS_Form1.dtpStart.visible(True)
+gui.SS_Form1.dtpStart.size(1800,345)
+gui.SS_Form1.dtpStart.zorder(0)
+gui.SS_Form1.dtpStart.position(100,335)
+gui.SS_Form1.dtpStart.enabled(True)
+gui.SS_Form1.dtpStart.checkbox(False)
+gui.SS_Form1.dtpStart.defaultvalue("")
+gui.SS_Form1.dtpStart.controlgroup(0)
+gui.SS_Form1.lbl_dtpEnd.create(label,"End Date",True,1800,200,1,1985,135,True,0,Arial,8,-2147483633,0)
+gui.SS_Form1.lbl_dtpEnd.defaultvalue("")
+gui.SS_Form1.lbl_dtpEnd.controlgroup(0)
+gui.SS_Form1.dtpEnd.create(datepicker)
+gui.SS_Form1.dtpEnd.visible(True)
+gui.SS_Form1.dtpEnd.size(1800,345)
+gui.SS_Form1.dtpEnd.zorder(0)
+gui.SS_Form1.dtpEnd.position(1985,335)
+gui.SS_Form1.dtpEnd.enabled(True)
+gui.SS_Form1.dtpEnd.checkbox(False)
+gui.SS_Form1.dtpEnd.defaultvalue("")
+gui.SS_Form1.dtpEnd.controlgroup(0)
+gui.SS_Form1.cmdPrint.create(button)
+gui.SS_Form1.cmdPrint.caption("Print")
+gui.SS_Form1.cmdPrint.visible(True)
+gui.SS_Form1.cmdPrint.size(1000,360)
+gui.SS_Form1.cmdPrint.zorder(0)
+gui.SS_Form1.cmdPrint.position(100,850)
+gui.SS_Form1.cmdPrint.enabled(True)
+gui.SS_Form1.cmdPrint.fontname("Arial")
+gui.SS_Form1.cmdPrint.fontsize(8)
+gui.SS_Form1.cmdPrint.event(click,cmdprint_click)
+gui.SS_Form1.cmdPrint.defaultvalue("")
+gui.SS_Form1.cmdPrint.controlgroup(0)
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.UDT.uPurch_Part.Define("sPart",String,Part)
+Variable.UDT.uPurch_Part.Define("sLoc",String,Location)
+Variable.UDT.uPurch_Part.Define("sDesc",String,Description)
+Variable.uGlobal.uPurch_Part.Declare("uPurch_Part")
+Variable.UDT.uStock_Part.Define("sPart",String,Part)
+Variable.UDT.uStock_Part.Define("sLoc",String,Location)
+Variable.UDT.uStock_Part.Define("Desc",String,Description)
+Variable.uGlobal.uStock_Part.Declare("uStock_Part")
+Variable.UDT.uPO_Purch_Parts.Define("Sales_Order",String,Sales_Order)
+Variable.UDT.uPO_Purch_Parts.Define("SO_Line",String,SO_Line)
+Variable.UDT.uPO_Purch_Parts.Define("Customer",String,Cust_Name)
+Variable.UDT.uPO_Purch_Parts.Define("Custom_Num",String,Customer_Num)
+Variable.UDT.uPO_Purch_Parts.Define("Part",String,Part)
+Variable.UDT.uPO_Purch_Parts.Define("Part_Desc",String,Part_Desc)
+Variable.UDT.uPO_Purch_Parts.Define("SO_Qty",Float,SO_Qty_Ordered)
+Variable.UDT.uPO_Purch_Parts.Define("SO_Line_Due",Date,SO_Line_Due)
+Variable.UDT.uPO_Purch_Parts.Define("GS_PO_No",String,GS_PO_Num)
+Variable.UDT.uPO_Purch_Parts.Define("PO_Line_Num",String,PO_Line_Num)
+Variable.UDT.uPO_Purch_Parts.Define("PO_Date_Order",Date,PO_Date_Order)
+Variable.UDT.uPO_Purch_Parts.Define("PO_Supplier",String,PO_VENDOR)
+Variable.UDT.uPO_Purch_Parts.Define("PO_Qty",String,PO_Qty)
+Variable.UDT.uPO_Purch_Parts.Define("PO_Line_Due",Date,PO_Line_Due)
+Variable.UDT.uPO_Purch_Parts.Define("Cust_PO_Num",String,Customer_PO)
+Variable.UDT.uPO_Purch_Parts.Define("TRMNL",String,TRMNL)
+Variable.uGlobal.uPO_Purch_Parts.Declare("uPO_Purch_Parts")
+Variable.UDT.uPO_Stock_Parts.Define("Part",String,Part)
+Variable.UDT.uPO_Stock_Parts.Define("Part_Desc",String,Description)
+variable.UDT.uPO_Stock_Parts.Define("GS_PO_No",String,Purchase_Order)
+Variable.UDT.uPO_Stock_Parts.Define("PO_Line_Num",String,Record_No)
+Variable.UDT.uPO_Stock_Parts.Define("PO_Date_Order",Date,Date_Order)
+Variable.UDT.uPO_Stock_Parts.Define("PO_Supplier",String,Vendor)
+Variable.UDT.uPO_Stock_Parts.Define("PO_Qty",String,Qty_Order)
+Variable.UDT.uPO_Stock_Parts.Define("PO_Line_Due",Date,Date_Due_Line)
+Variable.UDT.uPO_Stock_Parts.Define("TRMNL",String)
+Variable.uGlobal.uPO_Stock_Parts.Declare("uPO_Stock_Parts")
+Variable.UDT.uPO_Lines.Define("PO",String,Purchase_Order)
+Variable.UDT.uPO_Lines.Define("Qty_Order",Float,Qty_order)
+Variable.UDT.uPO_Lines.Define("Date_Due_Line",Date,Date_Due_Line)
+Variable.UDT.uPO_Lines.Define("PO_Date_Order",Date,Date_Order)
+Variable.UDT.uPO_Lines.Define("Vendor",String,Vendor)
+Variable.UDT.uPO_Lines.Define("Suffix",String,Suffix)
+Variable.UDT.uPO_Lines.Define("Part",String,Part)
+Variable.UDT.uPO_Lines.Define("Job",String,Job)
+Variable.UDT.uPO_Lines.Define("Record_NO",String,Record_No)
+Variable.uGlobal.uPO_Lines.Declare("uPO_Lines")
+Variable.UDT.uOrder_Lines.Define("Customer",String,Customer)
+Variable.UDT.uOrder_Lines.Define("Part",String,Part)
+Variable.UDT.uOrder_Lines.Define("Description",String,Description)
+Variable.UDT.uOrder_Lines.Define("Date_Item_Prom",Date,Date_Item_Prom)
+Variable.UDT.uOrder_Lines.Define("Customer_PO",String,Customer_Po)
+Variable.UDT.uOrder_Lines.Define("Order_no",String,Order_No)
+Variable.UDT.uOrder_Lines.Define("Record_NO",String,Record_No)
+Variable.UDT.uOrder_Lines.Define("Qty_Order",Float,Qty_Ordered)
+Variable.UDT.uOrder_Lines.Define("Name_Customer",String,Name_Customer)
+Variable.uGlobal.uOrder_Lines.Declare("uOrder_Lines")
+Variable.UDT.uOrdertoWO.Define("Job",String,Job)
+Variable.UDT.uOrdertoWO.Define("Suffix",String,Suffix)
+Variable.UDT.uOrdertoWO.Define("Order_No",String,Order_No)
+Variable.UDT.uOrdertoWO.Define("Order_Line",String,Order_Line)
+Variable.uGlobal.uOrdertoWO.Declare("uOrdertoWO")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Quote 4735
+'Date12/5/13
+'coded by TRT'
+
+
+'This will be run in conjunction iwith the MSI_SF_OWO_SHORTAGE.rpt
+
+'Purchased Parts with Open SO lines.
+'we are  linking alwasy so to po's that is the only way this will work.
+
+'Stock parts with open pos' same premise as purchased parts, but we are only going against stock parts
+'stock parts inventory code will be PS (P) or PJ(J)
+
+'report fields to pull in
+'Sales Order #
+'line number (SO)
+'customer number
+'customer name
+'customer po number (order header)
+'part number
+'part desc
+'order qty (SO)
+'so Line due(order line, promise date)
+'PO Number (from Sales order to po is linked)
+'p'o order date
+'supplier from po header
+'po qty order
+'po line item due date
+
+'open conncetion
+F.ODBC.Connection!conX.OpenConnection(V.Ambient.PDSN,V.Ambient.pUser,V.Ambient.Ppass)
+
+V.uGlobal.uPurch_Part.Redim(-1,-1)
+V.uGlobal.uStock_Part.Redim(-1,-1)
+V.uglobal.uPO_Purch_Parts.Redim(-1,-1)
+V.uGlobal.uPO_Lines.Redim(-1,-1)
+V.uGlobal.uOrder_Lines.Redim(-1,-1)
+V.uGlobal.uOrdertoWO.Redim(-1,-1)
+V.uGlobal.uPO_Stock_Parts.Redim(-1,-1)
+
+'show our form
+Gui.SS_Form1..Show
+
+'F.Intrinsic.Control.CallSub(Getparts)
+'F.Intrinsic.Control.CallSub(Getpo_parts_purch)
+
+
+
+
+Program.Sub.Main.End
+
+Program.Sub.Unload.Start
+'close my wait dialog box
+F.Intrinsic.UI.CloseWaitDialog
+'close connection
+F.ODBC.connection!conX.Close
+'end program
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.GetParts.Start
+F.Intrinsic.Control.SetErrorHandler("GetParts_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+
+'get our parts
+'purchased to Stock Parts
+V.Local.squery.Set("Select Part, Location, Description From Inventory_MSTR Where Part In(Select Part From Inventory_MST2 Where Code_Source = 'P')")
+F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conX!rst.EOF,<>,True)
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conX","rst","v.uglobal.uStock_Part",False)
+F.Intrinsic.Control.EndIf
+F.ODBC.conX!rst.Close
+
+'J is Purchase to Job parts
+V.Local.squery.Set("Select Part, Location, Description From Inventory_MSTR Where Part In(Select Part From Inventory_MST2 Where Code_Source = 'J')")
+F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conX!rst.EOF,<>,True)
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conX","rst","v.uglobal.uPurch_Part",False)
+F.Intrinsic.Control.EndIf
+F.ODBC.conX!rst.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GetParts_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3913_Open_PO_Parts.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.GetParts.End
+
+Program.Sub.GetPO_Parts_Purch.Start
+F.Intrinsic.Control.SetErrorHandler("GetPO_Parts_Purch_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.iC.Declare(Long)
+V.Local.iUB.Declare(Long)
+V.Local.iP.Declare(Long)
+V.Local.iO.Declare(Long)
+V.Local.sRetO.Declare(String)
+V.Local.sRetP.Declare(String)
+V.Local.sOrdinalFlag.Declare(String)
+
+F.Intrinsic.Control.For(V.local.ic,V.uGlobal.uPurch_Part.LBound,V.uGlobal.uPurch_Part.UBound,1)
+	'query our order lines looking for sales order lines with that part we are on.
+	F.Intrinsic.String.Replace(V.uglobal.uPurch_Part(v.Local.iC)!sPart,"'","''",V.uGlobal.uPurch_Part(v.Local.iC)!sPart)
+	V.local.sQuery.Set("Select Ol.Order_No,Ol.Record_NO, Customer,Name_Customer,Part,Description,Qty_Ordered,Date_Item_Prom, Customer_PO From V_Order_Lines AS OL Inner Join V_Order_Header AS OH On OL.Order_No = OH.Order_No")
+	F.Intrinsic.String.Concat(V.local.sQuery," Inner Join V_Customer_Master AS CM On OH.Customer = CM.Customer Where Part = '",V.uGlobal.uPurch_Part(v.Local.iC)!sPart,"'",V.local.sQuery)
+	F.ODBC.Connection!conX.OpenLocalRecordsetRO("rstOrderLines",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.conX!rstOrderLines.EOF,<>,True)
+		'load that information into our our order lines udt.
+		F.Intrinsic.Variable.LoadUDTFromRecordset("ConX","rstOrderLines","v.uglobal.uOrder_Lines",True)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conX!rstOrderLines.Close
+	'also look for PO's with that part as well.
+	F.Intrinsic.String.Concat("Select Job,Suffix,Part,Purchase_Order, Record_NO, Qty_Order,Date_Due_line, Date_Order, Vendor from V_PO_Lines AS PL Inner Join V_PO_Header AS PH On PL.Purchase_Order= PH.Purchase_Order Where Part = '",V.UGLOBAL.uPurch_Part(v.local.iC)!sPart,"'",V.Local.sQuery)
+	F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.conX!rst.EOF,<>,True)
+		F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uglobal.uPO_Lines",True)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conX!rst.Close
+F.Intrinsic.Control.Next(V.Local.iC)
+
+'now loop through our two udt's and combine them, based off of part, looking for the order lines, then po lines that have the same part
+'for every order we are going to write to udt, we are also going to write a po for every part as well.
+F.Intrinsic.Control.For(V.Local.iC,V.uGlobal.uPurch_Part.LBound,V.uGlobal.uPurch_Part.UBound,1)
+	'now query our two udts, Order Line and PO Lines against the part.  If we found a match for either we are going to write it to the table.
+	'query for our sales order first, then for every sales order found with that part
+	'we then query the Purchase Order UDT for the part as well, so for every sales order that we found we may have multiple records of po's for one sales order, but for the same part.
+	F.Intrinsic.Variable.UDTMultiSeek(V.uGlobal.uOrder_Lines!Part,V.uGlobal.uPurch_Part(v.Local.iC)!sPart,V.Local.sRetO)
+	F.Intrinsic.Control.If(V.Local.sRetO.Trim,<>,"")
+		F.Intrinsic.String.Split(V.Local.sRetO,"*!*",V.Local.sRetO)
+		F.Intrinsic.Control.For(V.Local.iO,V.Local.sRetO.LBound,V.Local.sRetO.UBound,1)
+			'now look for our po lines that have that part
+			F.Intrinsic.Variable.UDTMultiSeek(V.uGlobal.uPO_Lines!Part,V.uGlobal.uPurch_Part(v.Local.iC)!sPart,V.Local.sRetP)
+			F.Intrinsic.Control.If(V.Local.sRetP.Trim,<>,"")
+				F.Intrinsic.String.Split(V.Local.sRetP,"*!*",V.Local.sRetP)
+				F.Intrinsic.Control.For(V.Local.iP,V.Local.sRetP.LBound,V.Local.sRetP.UBound,1)
+					'redim our storage udt for the table information
+					F.Intrinsic.Control.If(V.uGlobal.uPO_Purch_Parts.ubound,=,-1)
+						V.Local.iUB.Set(0)
+						V.uGlobal.uPO_Purch_Parts.Redim(0,V.Local.iUB)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.Math.Add(V.uGlobal.uPO_Purch_Parts.UBound,1,V.Local.iUB)
+						V.uGlobal.uPO_Purch_Parts.RedimPreserve(0,V.Local.iUB)
+					F.Intrinsic.Control.EndIf
+					'our order section
+					V.uglobal.uPO_Purch_Parts(v.local.iub)!Sales_Order.set(V.uglobal.uOrder_Lines(v.local.sretO(v.Local.iO))!Order_no)
+					V.uglobal.uPO_Purch_Parts(v.local.iub)!SO_Line.set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Record_NO)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Custom_Num.set(V.uglobal.uOrder_Lines(v.local.sRetO(v.Local.iO))!Customer)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Customer.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Name_Customer)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Cust_PO_Num.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Customer_PO)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Part.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Part)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Part_Desc.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Description)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!SO_Qty.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Qty_Order)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!SO_Line_Due.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Date_Item_Prom)
+					'now our po section
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!GS_PO_No.Set(V.uGlobal.uPO_Lines(v.Local.sRetP(v.Local.iP))!PO)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Line_Num.Set(V.uGlobal.uPO_Lines(v.Local.sRetP(v.Local.iP))!Record_NO)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Date_Order.Set(V.uGlobal.uPO_Lines(v.Local.sRetP(v.Local.iP))!PO_Date_Order)
+					V.uglobal.uPO_Purch_Parts(v.Local.iUB)!PO_Supplier.Set(V.uGlobal.uPO_Lines(v.Local.sRetP(v.Local.iP))!Vendor)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Qty.Set(V.uGlobal.uPO_Lines(v.Local.sRetP(v.Local.iP))!Qty_Order)
+					V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Line_Due.Set(V.uGlobal.uPO_Lines(v.Local.sRetP(v.Local.iP))!Date_Due_Line)
+				F.Intrinsic.Control.Next(V.Local.iP)
+			F.Intrinsic.Control.Else
+				'redim our storage udt for the table information
+				F.Intrinsic.Control.If(V.uGlobal.uPO_Purch_Parts.ubound,=,-1)
+					V.Local.iUB.Set(0)
+					V.uGlobal.uPO_Purch_Parts.Redim(0,V.Local.iUB)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Math.Add(V.uGlobal.uPO_Purch_Parts.UBound,1,V.Local.iUB)
+					V.uGlobal.uPO_Purch_Parts.RedimPreserve(0,V.Local.iUB)
+				F.Intrinsic.Control.EndIf
+				'we still want to store our order information from sRetO
+				'our order section
+				V.uglobal.uPO_Purch_Parts(v.local.iub)!Sales_Order.set(V.uglobal.uOrder_Lines(v.local.sretO(v.Local.iO))!Order_no)
+				V.uglobal.uPO_Purch_Parts(v.local.iub)!SO_Line.set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Record_NO)
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Custom_Num.set(V.uglobal.uOrder_Lines(v.local.sRetO(v.Local.iO))!Customer)
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Customer.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Name_Customer)
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Cust_PO_Num.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Customer_PO)
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Part.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Part)
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!Part_Desc.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Description)
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!SO_Qty.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Qty_Order)
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!SO_Line_Due.Set(V.uGlobal.uOrder_Lines(v.Local.sRetO(v.Local.iO))!Date_Item_Prom)
+				'now our po section will be blank values.
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!GS_PO_No.Set("")
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Line_Num.Set("")
+'				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Date_Order.Set("01/01/1900")
+				V.uglobal.uPO_Purch_Parts(v.Local.iUB)!PO_Supplier.Set("")
+				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Qty.Set(0.00)
+'				V.uGlobal.uPO_Purch_Parts(v.Local.iUB)!PO_Line_Due.Set("01/01/1900")
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(V.Local.iO)
+	F.Intrinsic.Control.endif
+F.Intrinsic.Control.Next(V.Local.iC)
+
+
+F.Intrinsic.String.Concat("Delete From GCG_3913_OPO_Purch Where TRMNL = '",V.Caller.Terminal,"'",V.Local.sQuery)
+F.ODBC.Connection!conX.Execute(V.Local.sQuery)
+
+F.Intrinsic.Control.If(V.uGlobal.uPO_Purch_Parts.UBound,>,-1)
+	F.Intrinsic.Variable.UDTSetMemberValue(V.uGlobal.uPO_Purch_Parts!TRMNL,V.Caller.Terminal)
+	F.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3913_OPO_Purch")
+	F.Intrinsic.Variable.SaveUDTtoRecordSet("conX","rst","v.uglobal.uPO_Purch_Parts")
+	F.ODBC.conX!rst.Close
+F.Intrinsic.Control.EndIf
+
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GetPO_Parts_Purch_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3913_Open_PO_Parts.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.GetPO_Parts_Purch.End
+
+Program.Sub.GetPO_Parts_Stock.Start
+F.Intrinsic.Control.SetErrorHandler("GetPO_Parts_Stock_Err")
+F.Intrinsic.Control.ClearErrors
+
+'here we will go through our Stock parts.
+'this will be done this way.
+V.Local.sError.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.iC.Declare(Long)
+V.Local.iUB.Declare(Long)
+V.Local.iP.Declare(Long)
+V.Local.iO.Declare(Long)
+V.Local.sRetO.Declare(String)
+V.Local.sRetP.Declare(String)
+V.Local.sOrdinalFlag.Declare(String)
+
+'only pull in Stock Parts with Open PO's, not associated to WO or SO
+'loop through our uStock Part udt, and find all open pO line and header information
+
+'redim our po_lines and order_lines udt to be included for stock parts only
+V.uGlobal.uPO_Lines.Redim(-1,-1)
+V.uGlobal.uOrder_Lines.Redim(-1,-1)
+V.uGlobal.uOrdertoWO.Redim(-1,-1)
+
+
+F.Intrinsic.Control.For(V.Local.iC,0,V.uGlobal.uStock_Part.UBound,1)
+	'query our PO lines table for a record for each part above, we only want to show the parts that are on a po that do not have a job assigned to it as well
+'	so job field on PO lines need to be blank to pull in.	v.uGlobal.u
+	'JUST IN CASE IF THEY HAVE AN ILLEGAL FIELD IN THEIR PART STRING, SINGLE QUOTE MARK
+	F.Intrinsic.String.Replace(V.uGlobal.uStock_Part(v.Local.iC)!sPart,"'","''",V.uGlobal.uStock_Part(v.Local.iC)!sPart)
+	F.Intrinsic.String.Concat("Select Part,Description,Purchase_Order, Record_NO, Qty_Order,Date_Due_line, Date_Order, Vendor from V_PO_Lines AS PL Inner Join V_PO_Header AS PH On PL.Purchase_Order= PH.Purchase_Order Where Part = '",V.UGLOBAL.uStock_Part(v.local.iC)!sPart,"' And PL.Job = ''",V.Local.sQuery)
+'F.Intrinsic.Debug.InvokeDebugger
+'F.Intrinsic.Debug.Stop
+
+'F.Intrinsic.Debug.Stop
+	F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.conX!rst.EOF,<>,True)
+'		F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uglobal.uPO_Lines",True)
+		F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","v.uGlobal.uPO_Stock_Parts",True)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conX!rst.Close
+F.Intrinsic.Control.Next(V.Local.iC)
+
+
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!Part,"Part")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!Part_Desc,"Part_Desc")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!GS_PO_No,"GS_PO_Num")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!PO_Line_Num,"PO_Line_Num")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!PO_Date_Order,"PO_Date_ORder")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!PO_Supplier,"PO_Vendor")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!PO_Qty,"PO_Qty")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!PO_Line_Due,"PO_Line_Due")
+F.Intrinsic.Variable.SetUDTFieldReference(V.uGlobal.uPO_Stock_Parts!TRMNL,"TRMNL")
+
+
+
+
+
+F.Intrinsic.String.Concat("Delete From GCG_3913_OPO_Stock Where TRMNL = '",V.Caller.Terminal,"'",V.Local.sQuery)
+F.ODBC.Connection!conX.Execute(V.Local.sQuery)
+F.Intrinsic.Control.If(V.uGlobal.uPO_Stock_Parts.UBound,>,-1)
+	F.Intrinsic.Variable.UDTSetMemberValue(V.uGlobal.uPO_Stock_Parts!TRMNL,V.Caller.Terminal)
+	F.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3913_OPO_Stock")
+	F.Intrinsic.Variable.SaveUDTtoRecordSet("conX","rst","v.uglobal.uPO_Stock_Parts")
+	F.ODBC.conX!rst.Close
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GetPO_Parts_Stock_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3913_Open_PO_Parts.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.GetPO_Parts_Stock.End
+
+Program.Sub.Print_Rpts.Start
+F.Intrinsic.Control.SetErrorHandler("Print_Rpts_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.iRptID.Declare(Long)
+V.Local.iRptIDArray.Declare(Long)
+V.Local.sRptName.Declare(String)
+V.Local.sMessage.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.sValues.Declare(String)
+V.Local.dStart.Declare(Date)
+V.Local.dEnd.Declare(Date)
+
+
+V.Local.iC.Declare(Long)
+
+'get report id for our 3 reports
+'MSI_SF_OWO_Shortage with Param date range,
+'GCG_Open_PO_Stock_Parts with param terminal
+'GCG_Open_PO_Purch_Parts with param terminal
+
+F.Intrinsic.STring.Split("MSI_3913_SF_OWO_Shortage.rpt*!*GCG_3913_Open_PO_Purch_Parts.rpt*!*GCG_3913_Open_PO_Stock_Parts.rpt","*!*",V.Local.sRptName)
+'have an array of our report ids.
+V.local.iRptIDArray.Redim(0,2)
+F.Intrinsic.Control.For(V.Local.iC,0,2,1)
+	F.Global.BI.GetIDFromName(V.Local.sRptName(v.Local.iC),True,V.Local.iRptIDArray(v.Local.iC))
+	F.Intrinsic.Control.If(V.Local.iRptIDArray(v.local.ic),<,0)
+		F.Intrinsic.string.Concat("Active sequence for report : ",V.Local.sRptName(v.Local.iC)," not found. Please set up through Report Maintenance.",V.Local.sMessage)
+		F.Intrinsic.UI.Msgbox(V.Local.sMessage,"RPT ID not found!",64)
+		F.Intrinsic.Control.CallSub(Unload)
+	F.Intrinsic.Control.EndIf
+'	V.Local.iRptIDArray(v.Local.iC).Set(V.Local.iRptID)
+F.Intrinsic.Control.Next(V.Local.ic)
+
+'print our reports one by one.
+F.Intrinsic.Control.For(V.Local.iC,0,2,1)
+	F.Intrinsic.Control.If(V.Local.iC,=,0)
+		F.Intrinsic.String.Split("DateStart*!*DateEnd","*!*",V.Local.sParam)
+		V.Local.dStart.Set(V.Screen.SS_Form1!dtpStart.Value)
+		V.Local.dEnd.Set(V.Screen.SS_Form1!dtpEnd.Value)
+		F.Intrinsic.String.Concat(V.Local.dStart.Formatyyyymmdd,"*!*",V.Local.dEnd.Formatyyyymmdd,V.Local.sValues)
+		F.Intrinsic.String.Split(V.Local.sValues,"*!*",V.Local.sValues)
+	F.Intrinsic.Control.Else
+		V.Local.sParam.Set("TRMNL")
+		V.Local.sValues.Set(V.Caller.Terminal)
+	F.Intrinsic.Control.EndIf
+	F.Global.BI.PrintReport(V.Local.iRptIDArray(v.Local.iC),0,V.Local.sParam,V.Local.sValues,"",False)
+	F.Intrinsic.UI.Sleep(2)
+F.Intrinsic.Control.Next(V.Local.iC)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Print_Rpts_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3913_Open_PO_Parts.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Print_Rpts.End
+
+program.sub.cmdprint_click.start
+F.Intrinsic.Control.SetErrorHandler("cmdprint_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.dStart.Declare(Date)
+V.Local.dEnd.Declare(Date)
+
+V.Local.dStart.Set(V.Screen.SS_Form1!dtpStart.Value)
+V.Local.dEnd.Set(V.Screen.SS_Form1!dtpEnd.Value)
+
+F.Intrinsic.Control.If(V.Local.dEnd,<,V.Local.dStart)
+	F.Intrinsic.UI.Msgbox("Ending date can not be before starting date.","Error in Selection.",64)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.InvokeWaitDialog("Please wait...")
+	F.Intrinsic.Control.CallSub(Getparts)
+	F.Intrinsic.Control.CallSub(Getpo_parts_purch)
+	F.Intrinsic.Control.CallSub(Getpo_parts_stock)
+	F.Intrinsic.UI.ChangeWaitStatus("Printing reports...")
+	F.Intrinsic.Control.CallSub(Print_rpts)
+	F.Intrinsic.Control.CallSub(Unload)
+F.Intrinsic.Control.EndIf
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdprint_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3913_Open_PO_Parts.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Unload)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.cmdprint_click.end
+
+Program.Sub.Comments.Start
+${$0$}$GCG_WO_Mat_Shortage_RPT.$}$TRT$}$12/5/2013
+${$3$}$0$}$$}$-1$}$-1$}$$}$1/1/1900$}$Quote 4735
+Program.Sub.Comments.End
+Program.Sub.ScreenSS.Start
+SS_Form1{{CAPTION::Open Work Order Shortage Report
+SS_Form1.CTRL{{NAME::dtpStart\\TYPE::6\\CAPTION::Start Date\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::dtpEnd\\TYPE::6\\CAPTION::End Date\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::cmdPrint\\TYPE::5\\CAPTION::Print\\GROUP::-1\\BROWSER::0\\SIZE::1
+
+Program.Sub.ScreenSS.End
+
